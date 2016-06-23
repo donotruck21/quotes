@@ -1,0 +1,21 @@
+<html>
+<head>
+	<title></title>
+</head>
+<style type="text/css">
+	*{
+		text-align: center;
+	}
+</style>
+<body>
+	<a href="/quotes">Dashboard</a> - 
+	<a href="/logout">Log Out</a>
+	<h1>Posts by {{all_quotes[0].alias}}</h1>
+	<h3>Count: {{quote_count[0].num_quotes}}</h3>
+	<br><br>
+	{% for quote in all_quotes: %}
+		<p>{{quote.author}}: {{quote.content}}</p>
+		<hr>
+	{% endfor %}
+</body>
+</html>

@@ -1,0 +1,102 @@
+<html>
+<head>
+	<title></title>
+</head>
+<style type="text/css">
+	*{
+		text-align: center;
+	}
+	.allQuotes{
+		width: 400px;
+		height: 600px;
+		overflow: auto;
+		border: 1px solid black;
+		display: inline-block;
+		vertical-align: top;
+	}
+	.allFavorites{
+		width: 400px;
+		height: 400px;
+		overflow: auto;
+		border: 1px solid black;
+		display: inline-block;
+		vertical-align: top;
+	}
+	.addQuote{
+		width: 200px;
+		border: 1px solid black;
+		display: inline-block;
+		vertical-align: top;
+	}
+	.quoteBox{
+		width:350px;
+		height: 200px;
+		border: 1px solid black;
+		text-align: center;
+	}
+	.header{
+		display: block;
+	}
+</style>
+<body>
+	<div class="header">
+		<h1>Welcome {{session['alias']}}!</h1>
+		<a href="/logout">LOG OUT</a><br><br>
+	</div>
+
+	<div class="allQuotes">
+		<h3>Quoteable Quotes</h3>
+
+		{% for quote in all_quotes: %}
+			<div class="quoteBox">
+				<p><b>{{quote.author}}:</b> {{quote.content}}</p>
+				<p><i>Added by: <a href="/users/{{quote.user_id}}">{{quote.alias}}</a></i></p>
+
+				<form action="/favorite" method="post">
+					<input type="hidden" name="quote_id" value="{{quote.id}}">
+					<input type="submit" value="Add to Favs">
+				</form>
+
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="allFavorites">
+		<h3>Your Favorites</h3>
+
+		{% for fav in all_favorites: %}
+			<div class="quoteBox">
+				<p><b>{{fav.author}}:</b> {{fav.content}}</p>
+				<p><i>Added by: <a href="/users/{{fav.poster}}">{{fav.alias}}</a></i></p>
+
+				<form action="/deletefav" method="post">
+					<input type="hidden" name="favorite_id" value="{{fav.favorite_id}}">
+					<input type="submit" value="Remove from Favorites">
+				</form>
+
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="addQuote">
+		<h3>Contribute a Quote:</h3>
+		<form action="/quotes/add" method="post">
+			<label>Author
+				<input type="text" name="author">
+			</label><br>
+			<label>Message:
+				<textarea name="content"></textarea>
+			</label><br>
+			<input type="submit" value="submit">
+		</form>
+
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for message in messages %}
+					<p>{{ message }}</p>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+	</div>
+</body>
+</html>
